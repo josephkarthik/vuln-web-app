@@ -504,16 +504,15 @@ def ssrf():
     if request.method == 'POST':
         url = request.form.get('url')
         try:
-         
-            
-            # Mitigation: Implement a whitelist to only allow requests to trusted domains.
-            # from urllib.parse import urlparse
-            # allowed_domains = ['example.com', 'trusted.com']
-            # domain = urlparse(url).netloc
-            # if domain not in allowed_domains:
-            #     return render_template('ssrf.html', content="Error: Domain not allowed.")
+            # Replace this with the exact URL(s) approved for this application.
+            if url != 'https://example.com/':
+                return render_template('ssrf.html', content="Error: URL not allowed.")
 
-            content = requests.get(url).text
+            content = requests.get(
+                'https://example.com/',
+                allow_redirects=False,
+                timeout=5
+            ).text
             return render_template('ssrf.html', content=content)
         except requests.exceptions.RequestException as e:
             return render_template('ssrf.html', content=f"Error: {e}")
